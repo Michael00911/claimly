@@ -8,7 +8,7 @@ import { LogoWithText } from "@/components/Logo";
 
 function Header() {
   return (
-    <nav className="fixed top-0 w-full z-50 glass-nav shadow-sm">
+    <nav className="fixed top-8 w-full z-50 glass-nav shadow-sm">
       <div className="flex justify-between items-center max-w-7xl mx-auto px-6 h-20">
         <Link href="/">
           <LogoWithText size={32} />
@@ -92,7 +92,7 @@ function HeroSection() {
           <p className="font-body text-lg lg:text-xl text-on-surface-variant mb-10 max-w-2xl leading-relaxed">
             EU law guarantees compensation for disrupted flights. Check your
             eligibility in seconds.{" "}
-            <span className="font-semibold text-primary">No win, no fee.</span>
+            <span className="font-semibold text-primary">Currently 100% free during beta.</span>
           </p>
 
           {/* Search form card */}
@@ -136,7 +136,7 @@ function HeroSection() {
               <svg className="w-4 h-4 text-tertiary" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M16.403 12.652a3 3 0 000-5.304 3 3 0 00-3.75-3.751 3 3 0 00-5.305 0 3 3 0 00-3.751 3.75 3 3 0 000 5.305 3 3 0 003.75 3.751 3 3 0 005.305 0 3 3 0 003.751-3.75zm-2.546-4.46a.75.75 0 00-1.214-.883l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clipRule="evenodd" />
               </svg>
-              Free eligibility check &middot; No credit card required
+              100% free during beta &middot; No credit card required
             </div>
           </div>
         </div>
@@ -179,7 +179,7 @@ const stats = [
   { value: "€600", label: "Maximum compensation", highlight: false },
   { value: "3h", label: "Minimum delay", highlight: false },
   { value: "6 yrs", label: "Claim window", highlight: false },
-  { value: "25%", label: "Only if you win", highlight: true },
+  { value: "Free", label: "During beta", highlight: true },
 ];
 
 function StatsSection() {
@@ -292,7 +292,7 @@ const faqs = [
   },
   {
     q: "How much does Claimly charge?",
-    a: "Nothing upfront. We charge a 25% success fee only if you receive compensation. If we don\u2019t win, you don\u2019t pay.",
+    a: "We\u2019re currently in beta and the service is completely free. After beta, we\u2019ll charge a 25% success fee \u2014 but only if you receive compensation. If we don\u2019t win, you don\u2019t pay.",
   },
   {
     q: "How far back can I claim?",
@@ -374,7 +374,7 @@ function CTASection() {
         </h2>
         <p className="font-body text-lg text-on-surface-variant mb-10 max-w-lg mx-auto">
           It takes 30 seconds to find out if you&apos;re owed compensation.
-          Join thousands of happy travelers.
+          Completely free during our beta period.
         </p>
         <a
           href="#"
@@ -394,8 +394,12 @@ function CTASection() {
 export default function Home() {
   return (
     <>
+      {/* Beta banner */}
+      <div className="fixed top-0 w-full z-[60] bg-tertiary text-white text-center py-2 text-sm font-body font-medium">
+        Early Access &mdash; 100% free during beta. No fees, no catches.
+      </div>
       <Header />
-      <main className="flex-1 pt-20">
+      <main className="flex-1 pt-28">
         <HeroSection />
         <StatsSection />
         <HowItWorks />

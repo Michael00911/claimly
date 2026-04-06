@@ -174,7 +174,7 @@ function CheckContent() {
                 </Link>
 
                 <p className="mt-3 text-center font-body text-sm text-on-surface-variant">
-                  No win, no fee &middot; 25% success fee
+                  100% free during beta &middot; No fees
                 </p>
               </div>
             ) : (

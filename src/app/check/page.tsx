@@ -15,8 +15,8 @@ export default function CheckPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen flex items-center justify-center">
-          <div className="w-5 h-5 border-2 border-foreground/20 border-t-foreground rounded-full animate-spin" />
+        <div className="min-h-screen flex items-center justify-center bg-surface">
+          <div className="w-6 h-6 border-2 border-primary/20 border-t-primary rounded-full animate-spin" />
         </div>
       }
     >
@@ -47,11 +47,8 @@ function CheckContent() {
     fetch(`/api/check-flight?${params.toString()}`)
       .then((res) => res.json())
       .then((data) => {
-        if (data.error) {
-          setError(data.error);
-        } else {
-          setResult(data);
-        }
+        if (data.error) setError(data.error);
+        else setResult(data);
       })
       .catch(() => setError("Failed to check flight. Please try again."))
       .finally(() => setLoading(false));
@@ -59,87 +56,72 @@ function CheckContent() {
 
   return (
     <>
-      <header className="w-full backdrop-blur-md bg-surface/80 sticky top-0 z-50">
-        <div className="max-w-5xl mx-auto px-6 h-14 flex items-center">
-          <Link href="/" className="text-[15px] font-semibold tracking-tight text-foreground">
+      <nav className="fixed top-0 w-full z-50 glass-nav shadow-sm">
+        <div className="flex items-center max-w-7xl mx-auto px-6 h-20">
+          <Link href="/" className="text-2xl font-bold tracking-tight text-primary font-headline">
             Claimly
           </Link>
         </div>
-      </header>
+      </nav>
 
-      <main className="flex-1 max-w-xl mx-auto px-6 py-16 w-full">
+      <main className="flex-1 pt-20 max-w-2xl mx-auto px-6 py-16 w-full">
         {loading && (
           <div className="flex flex-col items-center py-24">
-            <div className="w-5 h-5 border-2 border-foreground/20 border-t-foreground rounded-full animate-spin" />
-            <p className="mt-4 text-[15px] text-muted">
+            <div className="w-6 h-6 border-2 border-primary/20 border-t-primary rounded-full animate-spin" />
+            <p className="mt-4 font-body text-on-surface-variant">
               Checking {flightNumber}...
             </p>
           </div>
         )}
 
         {error && (
-          <div className="rounded-2xl bg-danger-subtle p-6 ring-1 ring-danger/10">
-            <p className="text-[15px] font-medium text-danger">{error}</p>
-            <Link
-              href="/"
-              className="mt-3 inline-block text-[13px] text-accent hover:underline"
-            >
+          <div className="rounded-xl bg-error-subtle p-6 border border-error/10">
+            <p className="font-body font-medium text-error">{error}</p>
+            <Link href="/" className="mt-3 inline-block font-body text-sm text-primary hover:underline">
               &larr; Try another flight
             </Link>
           </div>
         )}
 
         {result && (
-          <div className="space-y-5">
+          <div className="space-y-6">
             {result.isDemo && (
-              <div className="rounded-xl bg-warning-subtle px-4 py-3 ring-1 ring-warning/10">
-                <p className="text-[13px] text-warning">
+              <div className="rounded-xl bg-surface-card px-5 py-3 border border-outline-variant/15 shadow-sm">
+                <p className="font-body text-sm text-on-surface-variant">
                   Demo mode &mdash; using simulated data.
                 </p>
               </div>
             )}
 
             {/* Flight card */}
-            <div className="rounded-2xl bg-surface p-6 shadow-sm ring-1 ring-ring">
-              <div className="flex items-center justify-between">
-                <h2 className="text-[20px] font-semibold tracking-tight text-foreground">
+            <div className="bg-surface-card rounded-xl p-8 shadow-md border border-outline-variant/15">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="font-headline text-2xl font-bold text-primary">
                   {result.flight.flightNumber}
                 </h2>
-                <span className="text-[13px] text-muted">
+                <span className="font-body text-sm text-on-surface-variant">
                   {result.flight.airline}
                 </span>
               </div>
 
-              <div className="mt-5 grid grid-cols-2 gap-x-6 gap-y-4">
+              <div className="grid grid-cols-2 gap-x-8 gap-y-5">
                 <div>
-                  <p className="text-[12px] font-medium text-muted-2 uppercase tracking-wide">
-                    From
-                  </p>
-                  <p className="mt-0.5 text-[15px] text-foreground-secondary">
-                    {result.flight.departureAirport}
-                  </p>
+                  <p className="font-body text-xs font-bold uppercase tracking-wider text-on-surface-variant">From</p>
+                  <p className="mt-1 font-body text-on-surface">{result.flight.departureAirport}</p>
                 </div>
                 <div>
-                  <p className="text-[12px] font-medium text-muted-2 uppercase tracking-wide">
-                    To
-                  </p>
-                  <p className="mt-0.5 text-[15px] text-foreground-secondary">
-                    {result.flight.arrivalAirport}
-                  </p>
+                  <p className="font-body text-xs font-bold uppercase tracking-wider text-on-surface-variant">To</p>
+                  <p className="mt-1 font-body text-on-surface">{result.flight.arrivalAirport}</p>
                 </div>
                 <div>
-                  <p className="text-[12px] font-medium text-muted-2 uppercase tracking-wide">
-                    Scheduled
-                  </p>
-                  <p className="mt-0.5 text-[15px] text-foreground-secondary">
+                  <p className="font-body text-xs font-bold uppercase tracking-wider text-on-surface-variant">Scheduled</p>
+                  <p className="mt-1 font-body text-on-surface">
                     {new Date(result.flight.scheduledArrival).toLocaleString()}
                   </p>
                 </div>
                 <div>
-                  <p className="text-[12px] font-medium text-muted-2 uppercase tracking-wide">
-                    Actual
-                  </p>
-                  <p className="mt-0.5 text-[15px] text-foreground-secondary">
+                  <p className="font-body text-xs font-bold uppercase tracking-wider text-on-surface-variant">Actual</p>
+                  <p className="mt-1 font-body text-on-surface">
                     {result.flight.status === "cancelled"
                       ? "Cancelled"
                       : new Date(result.flight.actualArrival).toLocaleString()}
@@ -148,11 +130,9 @@ function CheckContent() {
               </div>
 
               {result.eligibility.delayMinutes > 0 && (
-                <div className="mt-5 pt-5 border-t border-border">
-                  <p className="text-[12px] font-medium text-muted-2 uppercase tracking-wide">
-                    Delay
-                  </p>
-                  <p className="mt-0.5 text-[24px] font-semibold tracking-tight text-danger">
+                <div className="mt-6 pt-6 border-t border-outline-variant/15">
+                  <p className="font-body text-xs font-bold uppercase tracking-wider text-on-surface-variant">Delay</p>
+                  <p className="mt-1 font-headline text-3xl font-bold text-error">
                     {Math.floor(result.eligibility.delayMinutes / 60)}h{" "}
                     {result.eligibility.delayMinutes % 60}m
                   </p>
@@ -160,28 +140,26 @@ function CheckContent() {
               )}
 
               {result.flight.status === "cancelled" && (
-                <div className="mt-5 pt-5 border-t border-border">
-                  <p className="text-[17px] font-semibold text-danger">
-                    Flight Cancelled
-                  </p>
+                <div className="mt-6 pt-6 border-t border-outline-variant/15">
+                  <p className="font-headline text-xl font-bold text-error">Flight Cancelled</p>
                 </div>
               )}
             </div>
 
             {/* Result */}
             {result.eligibility.eligible ? (
-              <div className="rounded-2xl bg-success-subtle p-6 ring-1 ring-success/10">
-                <div className="flex items-start gap-3">
-                  <div className="mt-0.5 w-5 h-5 rounded-full bg-success flex items-center justify-center shrink-0">
-                    <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+              <div className="bg-surface-card rounded-xl p-8 shadow-md border border-tertiary/20">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-full bg-tertiary/10 flex items-center justify-center shrink-0">
+                    <svg className="w-6 h-6 text-tertiary" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.403 12.652a3 3 0 000-5.304 3 3 0 00-3.75-3.751 3 3 0 00-5.305 0 3 3 0 00-3.751 3.75 3 3 0 000 5.305 3 3 0 003.75 3.751 3 3 0 005.305 0 3 3 0 003.751-3.75zm-2.546-4.46a.75.75 0 00-1.214-.883l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clipRule="evenodd" />
                     </svg>
                   </div>
                   <div>
-                    <h3 className="text-[17px] font-semibold text-foreground">
+                    <h3 className="font-headline text-xl font-bold text-primary">
                       You could be owed &euro;{result.eligibility.compensationEur}
                     </h3>
-                    <p className="mt-1 text-[15px] text-muted leading-relaxed">
+                    <p className="mt-2 font-body text-on-surface-variant leading-relaxed">
                       {result.eligibility.reason}
                     </p>
                   </div>
@@ -189,27 +167,24 @@ function CheckContent() {
 
                 <Link
                   href={`/claim?flight=${flightNumber}${date ? `&date=${date}` : ""}`}
-                  className="mt-5 flex items-center justify-center h-11 rounded-[10px] bg-primary text-white text-[15px] font-medium hover:bg-primary-hover active:scale-[0.98] transition-all duration-200"
+                  className="mt-6 flex items-center justify-center h-14 tertiary-gradient text-white font-headline font-bold text-lg rounded-lg shadow-lg shadow-tertiary/20 hover:opacity-95 active:scale-[0.98] transition-all duration-150"
                 >
                   Start my claim
                 </Link>
 
-                <p className="mt-3 text-center text-[13px] text-muted">
+                <p className="mt-3 text-center font-body text-sm text-on-surface-variant">
                   No win, no fee &middot; 25% success fee
                 </p>
               </div>
             ) : (
-              <div className="rounded-2xl bg-surface p-6 shadow-sm ring-1 ring-ring">
-                <h3 className="text-[17px] font-semibold text-foreground">
-                  Not eligible
-                </h3>
-                <p className="mt-2 text-[15px] text-muted leading-relaxed">
+              <div className="bg-surface-card rounded-xl p-8 shadow-sm border border-outline-variant/15">
+                <h3 className="font-headline text-xl font-bold text-primary">Not eligible</h3>
+                <p className="mt-2 font-body text-on-surface-variant leading-relaxed">
                   {result.eligibility.reason}
                 </p>
-
                 <Link
                   href="/"
-                  className="mt-5 flex items-center justify-center h-11 rounded-[10px] text-foreground text-[15px] font-medium ring-1 ring-ring hover:ring-border-strong hover:shadow-sm transition-all duration-200"
+                  className="mt-6 flex items-center justify-center h-12 rounded-lg font-headline font-semibold text-primary border border-outline-variant/15 hover:bg-surface-low transition-colors"
                 >
                   Check another flight
                 </Link>

@@ -14,8 +14,8 @@ export default function ClaimPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen flex items-center justify-center">
-          <div className="w-5 h-5 border-2 border-foreground/20 border-t-foreground rounded-full animate-spin" />
+        <div className="min-h-screen flex items-center justify-center bg-surface">
+          <div className="w-6 h-6 border-2 border-primary/20 border-t-primary rounded-full animate-spin" />
         </div>
       }
     >
@@ -54,7 +54,6 @@ function ClaimContent() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!flightData) return;
-
     setStep("generating");
 
     const res = await fetch("/api/generate-claim", {
@@ -81,7 +80,7 @@ function ClaimContent() {
     setStep("letter");
   };
 
-  const handleCopyLetter = () => {
+  const handleCopy = () => {
     navigator.clipboard.writeText(letter);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -98,29 +97,31 @@ function ClaimContent() {
   };
 
   const inputClass =
-    "w-full h-11 px-4 rounded-[10px] bg-surface text-[15px] text-foreground placeholder:text-muted-2 shadow-sm ring-1 ring-ring focus:outline-none focus:ring-2 focus:ring-accent/40 transition-shadow duration-200";
+    "w-full h-14 bg-surface-low border-none rounded-lg px-4 text-on-surface font-body focus:ring-2 focus:ring-surface-tint focus:bg-surface-card transition-all outline-none";
 
   return (
     <>
-      <header className="w-full backdrop-blur-md bg-surface/80 sticky top-0 z-50">
-        <div className="max-w-5xl mx-auto px-6 h-14 flex items-center">
-          <Link href="/" className="text-[15px] font-semibold tracking-tight text-foreground">
+      <nav className="fixed top-0 w-full z-50 glass-nav shadow-sm">
+        <div className="flex items-center max-w-7xl mx-auto px-6 h-20">
+          <Link href="/" className="text-2xl font-bold tracking-tight text-primary font-headline">
             Claimly
           </Link>
         </div>
-      </header>
+      </nav>
 
-      <main className="flex-1 max-w-xl mx-auto px-6 py-16 w-full">
-        {/* Flight summary pill */}
+      <main className="flex-1 pt-20 max-w-2xl mx-auto px-6 py-16 w-full">
+        {/* Flight summary */}
         {flightData && (
-          <div className="rounded-xl bg-surface px-4 py-3 shadow-sm ring-1 ring-ring flex items-center justify-between mb-10">
-            <div className="flex items-center gap-2">
-              <span className="text-[15px] font-semibold text-foreground">
+          <div className="bg-surface-card rounded-xl px-6 py-4 shadow-sm border border-outline-variant/15 flex items-center justify-between mb-10">
+            <div className="flex items-center gap-3">
+              <span className="font-headline font-bold text-primary">
                 {flightData.flight.flightNumber}
               </span>
-              <span className="text-[13px] text-muted">{flightData.flight.airline}</span>
+              <span className="font-body text-sm text-on-surface-variant">
+                {flightData.flight.airline}
+              </span>
             </div>
-            <span className="text-[15px] font-semibold text-success">
+            <span className="font-headline font-bold text-tertiary">
               &euro;{flightData.eligibility.compensationEur}
             </span>
           </div>
@@ -129,91 +130,91 @@ function ClaimContent() {
         {/* Form */}
         {step === "form" && (
           <div>
-            <h1 className="text-[28px] font-semibold tracking-[-0.03em] text-foreground">
+            <h1 className="font-headline text-3xl font-bold text-primary">
               Your details
             </h1>
-            <p className="mt-2 text-[15px] text-muted">
+            <p className="mt-2 font-body text-on-surface-variant">
               We&apos;ll use this to generate your compensation letter.
             </p>
 
-            <form onSubmit={handleSubmit} className="mt-8 space-y-4">
-              <div>
-                <label className="block text-[13px] font-medium text-foreground-secondary mb-1.5">
-                  Full name
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="John Smith"
-                  className={inputClass}
-                />
-              </div>
+            <div className="mt-8 bg-surface-card p-8 rounded-xl shadow-md border border-outline-variant/15">
+              <form onSubmit={handleSubmit} className="space-y-5">
+                <div className="space-y-1.5">
+                  <label className="font-body text-sm font-semibold text-on-surface-variant">
+                    Full name
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="John Smith"
+                    className={inputClass}
+                  />
+                </div>
 
-              <div>
-                <label className="block text-[13px] font-medium text-foreground-secondary mb-1.5">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="john@example.com"
-                  className={inputClass}
-                />
-              </div>
+                <div className="space-y-1.5">
+                  <label className="font-body text-sm font-semibold text-on-surface-variant">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="john@example.com"
+                    className={inputClass}
+                  />
+                </div>
 
-              <div>
-                <label className="block text-[13px] font-medium text-foreground-secondary mb-1.5">
-                  Home address
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={address}
-                  onChange={(e) => setAddress(e.target.value)}
-                  placeholder="123 Main Street, London, UK"
-                  className={inputClass}
-                />
-              </div>
+                <div className="space-y-1.5">
+                  <label className="font-body text-sm font-semibold text-on-surface-variant">
+                    Home address
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
+                    placeholder="123 Main Street, London, UK"
+                    className={inputClass}
+                  />
+                </div>
 
-              <div>
-                <label className="block text-[13px] font-medium text-foreground-secondary mb-1.5">
-                  Booking reference
-                  <span className="text-muted-2 font-normal ml-1">optional</span>
-                </label>
-                <input
-                  type="text"
-                  value={bookingRef}
-                  onChange={(e) => setBookingRef(e.target.value)}
-                  placeholder="ABC123"
-                  className={inputClass}
-                />
-              </div>
+                <div className="space-y-1.5">
+                  <label className="font-body text-sm font-semibold text-on-surface-variant">
+                    Booking reference{" "}
+                    <span className="font-normal text-outline-variant">optional</span>
+                  </label>
+                  <input
+                    type="text"
+                    value={bookingRef}
+                    onChange={(e) => setBookingRef(e.target.value)}
+                    placeholder="ABC123"
+                    className={inputClass}
+                  />
+                </div>
 
-              <div className="pt-2">
                 <button
                   type="submit"
-                  className="w-full h-11 rounded-[10px] bg-primary text-white text-[15px] font-medium hover:bg-primary-hover active:scale-[0.98] transition-all duration-200 cursor-pointer"
+                  className="w-full h-14 tertiary-gradient text-white font-headline font-bold text-lg rounded-lg shadow-lg shadow-tertiary/20 hover:opacity-95 active:scale-[0.98] transition-all duration-150 cursor-pointer"
                 >
                   Generate claim letter
                 </button>
-              </div>
 
-              <p className="text-[13px] text-center text-muted-2">
-                Free &middot; No payment required
-              </p>
-            </form>
+                <p className="font-body text-sm text-center text-on-surface-variant">
+                  Free &middot; No payment required
+                </p>
+              </form>
+            </div>
           </div>
         )}
 
         {/* Generating */}
         {step === "generating" && (
           <div className="flex flex-col items-center py-24">
-            <div className="w-5 h-5 border-2 border-foreground/20 border-t-foreground rounded-full animate-spin" />
-            <p className="mt-4 text-[15px] text-muted">
+            <div className="w-6 h-6 border-2 border-primary/20 border-t-primary rounded-full animate-spin" />
+            <p className="mt-4 font-body text-on-surface-variant">
               Generating your claim letter...
             </p>
           </div>
@@ -222,37 +223,37 @@ function ClaimContent() {
         {/* Letter */}
         {step === "letter" && (
           <div>
-            <h1 className="text-[28px] font-semibold tracking-[-0.03em] text-foreground">
+            <h1 className="font-headline text-3xl font-bold text-primary">
               Your claim letter
             </h1>
-            <p className="mt-2 text-[15px] text-muted">
+            <p className="mt-2 font-body text-on-surface-variant">
               Review, then copy or download to send to the airline.
             </p>
 
-            <div className="mt-6 rounded-2xl bg-surface p-6 shadow-sm ring-1 ring-ring">
-              <pre className="whitespace-pre-wrap text-[14px] text-foreground-secondary font-sans leading-[1.7]">
+            <div className="mt-6 bg-surface-card rounded-xl p-8 shadow-md border border-outline-variant/15">
+              <pre className="whitespace-pre-wrap text-sm text-on-surface font-body leading-[1.8]">
                 {letter}
               </pre>
             </div>
 
             <div className="mt-4 flex gap-3">
               <button
-                onClick={handleCopyLetter}
-                className="flex-1 h-11 rounded-[10px] text-[15px] font-medium text-foreground ring-1 ring-ring hover:ring-border-strong hover:shadow-sm active:scale-[0.98] transition-all duration-200 cursor-pointer"
+                onClick={handleCopy}
+                className="flex-1 h-12 rounded-lg font-headline font-semibold text-primary border border-outline-variant/15 hover:bg-surface-low active:scale-[0.98] transition-all cursor-pointer"
               >
-                {copied ? "Copied" : "Copy"}
+                {copied ? "Copied!" : "Copy"}
               </button>
               <button
                 onClick={handleDownload}
-                className="flex-1 h-11 rounded-[10px] bg-primary text-white text-[15px] font-medium hover:bg-primary-hover active:scale-[0.98] transition-all duration-200 cursor-pointer"
+                className="flex-1 h-12 rounded-lg btn-gradient text-white font-headline font-semibold hover:opacity-90 active:scale-[0.98] transition-all cursor-pointer"
               >
                 Download .txt
               </button>
             </div>
 
-            <div className="mt-8 rounded-2xl bg-surface p-6 shadow-sm ring-1 ring-ring">
-              <h3 className="text-[15px] font-semibold text-foreground">Next steps</h3>
-              <ol className="mt-3 space-y-2 text-[14px] text-muted list-decimal list-inside leading-relaxed">
+            <div className="mt-8 bg-surface-card rounded-xl p-8 shadow-sm border border-outline-variant/15">
+              <h3 className="font-headline font-bold text-primary">Next steps</h3>
+              <ol className="mt-4 space-y-3 font-body text-sm text-on-surface-variant list-decimal list-inside leading-relaxed">
                 <li>Review and personalize the letter if needed</li>
                 <li>
                   Send to {flightData?.flight.airline || "the airline"}&apos;s
@@ -265,7 +266,7 @@ function ClaimContent() {
 
             <Link
               href="/"
-              className="mt-6 block text-[13px] text-accent hover:underline"
+              className="mt-6 block font-body text-sm text-primary hover:underline"
             >
               &larr; Check another flight
             </Link>

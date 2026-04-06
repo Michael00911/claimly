@@ -3,6 +3,7 @@
 import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { LogoWithText } from "@/components/Logo";
 import type { FlightInfo, EligibilityResult } from "@/lib/ec261";
 
 interface CheckResult {
@@ -58,8 +59,8 @@ function CheckContent() {
     <>
       <nav className="fixed top-0 w-full z-50 glass-nav shadow-sm">
         <div className="flex items-center max-w-7xl mx-auto px-6 h-20">
-          <Link href="/" className="text-2xl font-bold tracking-tight text-primary font-headline">
-            Claimly
+          <Link href="/">
+            <LogoWithText size={32} />
           </Link>
         </div>
       </nav>

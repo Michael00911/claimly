@@ -4,16 +4,14 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
+import { LogoWithText } from "@/components/Logo";
 
 function Header() {
   return (
     <nav className="fixed top-0 w-full z-50 glass-nav shadow-sm">
       <div className="flex justify-between items-center max-w-7xl mx-auto px-6 h-20">
-        <Link
-          href="/"
-          className="text-2xl font-bold tracking-tight text-primary font-headline"
-        >
-          Claimly
+        <Link href="/">
+          <LogoWithText size={32} />
         </Link>
         <div className="hidden md:flex items-center gap-8">
           <a
@@ -48,9 +46,7 @@ function Footer() {
   return (
     <footer className="bg-surface-low w-full py-12 px-6">
       <div className="flex flex-col md:flex-row justify-between items-center max-w-7xl mx-auto gap-8">
-        <div className="text-xl font-bold text-primary font-headline">
-          Claimly
-        </div>
+        <LogoWithText size={28} />
         <div className="flex flex-wrap justify-center gap-6">
           <a className="font-body text-sm text-on-surface-variant hover:text-primary transition-colors" href="#">
             Terms of Service

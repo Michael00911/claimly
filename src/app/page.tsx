@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 
 function Header() {
   return (
@@ -146,13 +147,15 @@ function HeroSection() {
 
         {/* Hero image */}
         <div className="lg:col-span-5 relative hidden lg:block">
-          <div className="relative w-full aspect-square rounded-3xl overflow-hidden shadow-xl bg-surface-high">
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-primary/5" />
-            <div className="absolute inset-0 flex items-center justify-center">
-              <svg className="w-32 h-32 text-primary/20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={0.5}>
-                <path d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
-              </svg>
-            </div>
+          <div className="relative w-full aspect-square rounded-3xl overflow-hidden shadow-xl">
+            <Image
+              src="/hero-wing.jpg"
+              alt="Aircraft wing above clouds"
+              fill
+              className="object-cover"
+              priority
+            />
+            <div className="absolute inset-0 bg-primary/10 mix-blend-multiply" />
           </div>
           {/* Badge */}
           <div className="absolute -bottom-6 -left-6 bg-surface-card p-6 rounded-2xl shadow-xl z-20 flex items-center gap-4 border border-outline-variant/15">
@@ -360,8 +363,15 @@ function FAQ() {
 
 function CTASection() {
   return (
-    <section className="py-24 relative overflow-hidden bg-surface-low">
-      <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent" />
+    <section className="py-24 relative overflow-hidden">
+      <div className="absolute inset-0 -z-10">
+        <Image
+          src="/cta-airport.jpg"
+          alt="Airport terminal"
+          fill
+          className="object-cover opacity-10"
+        />
+      </div>
       <div className="max-w-4xl mx-auto px-6 text-center relative z-10">
         <h2 className="font-headline text-4xl lg:text-5xl font-bold text-primary mb-6">
           Check your flight now

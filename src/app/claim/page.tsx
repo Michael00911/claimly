@@ -15,7 +15,7 @@ export default function ClaimPage() {
     <Suspense
       fallback={
         <div className="min-h-screen flex items-center justify-center">
-          <div className="inline-block w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin" />
+          <div className="w-5 h-5 border-2 border-foreground/20 border-t-foreground rounded-full animate-spin" />
         </div>
       }
     >
@@ -32,14 +32,13 @@ function ClaimContent() {
   const [flightData, setFlightData] = useState<CheckResult | null>(null);
   const [step, setStep] = useState<"form" | "generating" | "letter">("form");
   const [letter, setLetter] = useState("");
+  const [copied, setCopied] = useState(false);
 
-  // Form fields
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
   const [bookingRef, setBookingRef] = useState("");
 
-  // Fetch flight data on mount
   useEffect(() => {
     if (!flightNumber) return;
     const params = new URLSearchParams({ flight: flightNumber });
@@ -84,6 +83,8 @@ function ClaimContent() {
 
   const handleCopyLetter = () => {
     navigator.clipboard.writeText(letter);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   };
 
   const handleDownload = () => {
@@ -96,49 +97,49 @@ function ClaimContent() {
     URL.revokeObjectURL(url);
   };
 
+  const inputClass =
+    "w-full h-11 px-4 rounded-[10px] bg-surface text-[15px] text-foreground placeholder:text-muted-2 shadow-sm ring-1 ring-ring focus:outline-none focus:ring-2 focus:ring-accent/40 transition-shadow duration-200";
+
   return (
     <>
-      <header className="w-full border-b border-border">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center">
-          <Link href="/" className="text-xl font-bold text-primary">
+      <header className="w-full backdrop-blur-md bg-surface/80 sticky top-0 z-50">
+        <div className="max-w-5xl mx-auto px-6 h-14 flex items-center">
+          <Link href="/" className="text-[15px] font-semibold tracking-tight text-foreground">
             Claimly
           </Link>
         </div>
       </header>
 
-      <main className="flex-1 max-w-2xl mx-auto px-4 sm:px-6 py-12 w-full">
-        {/* Flight summary */}
+      <main className="flex-1 max-w-xl mx-auto px-6 py-16 w-full">
+        {/* Flight summary pill */}
         {flightData && (
-          <div className="border border-border rounded-lg p-4 mb-8 flex items-center justify-between">
-            <div>
-              <span className="font-bold">{flightData.flight.flightNumber}</span>
-              <span className="text-muted mx-2">&middot;</span>
-              <span className="text-sm text-muted">{flightData.flight.airline}</span>
-            </div>
-            <div className="text-right">
-              <span className="text-success font-bold">
-                &euro;{flightData.eligibility.compensationEur}
+          <div className="rounded-xl bg-surface px-4 py-3 shadow-sm ring-1 ring-ring flex items-center justify-between mb-10">
+            <div className="flex items-center gap-2">
+              <span className="text-[15px] font-semibold text-foreground">
+                {flightData.flight.flightNumber}
               </span>
-              <span className="text-sm text-muted ml-2">potential</span>
+              <span className="text-[13px] text-muted">{flightData.flight.airline}</span>
             </div>
+            <span className="text-[15px] font-semibold text-success">
+              &euro;{flightData.eligibility.compensationEur}
+            </span>
           </div>
         )}
 
-        {/* Step 1: Form */}
+        {/* Form */}
         {step === "form" && (
           <div>
-            <h1 className="text-2xl font-bold text-foreground">
-              Start Your Claim
+            <h1 className="text-[28px] font-semibold tracking-[-0.03em] text-foreground">
+              Your details
             </h1>
-            <p className="mt-2 text-muted">
-              Fill in your details below. We&apos;ll generate a professional
-              compensation letter you can send to the airline.
+            <p className="mt-2 text-[15px] text-muted">
+              We&apos;ll use this to generate your compensation letter.
             </p>
 
-            <form onSubmit={handleSubmit} className="mt-8 space-y-5">
+            <form onSubmit={handleSubmit} className="mt-8 space-y-4">
               <div>
-                <label className="block text-sm font-medium text-foreground mb-1">
-                  Full Name *
+                <label className="block text-[13px] font-medium text-foreground-secondary mb-1.5">
+                  Full name
                 </label>
                 <input
                   type="text"
@@ -146,13 +147,13 @@ function ClaimContent() {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="John Smith"
-                  className="w-full h-11 px-4 rounded-lg border border-border bg-white text-foreground placeholder:text-muted/50 focus:outline-none focus:ring-2 focus:ring-primary"
+                  className={inputClass}
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-foreground mb-1">
-                  Email *
+                <label className="block text-[13px] font-medium text-foreground-secondary mb-1.5">
+                  Email
                 </label>
                 <input
                   type="email"
@@ -160,13 +161,13 @@ function ClaimContent() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="john@example.com"
-                  className="w-full h-11 px-4 rounded-lg border border-border bg-white text-foreground placeholder:text-muted/50 focus:outline-none focus:ring-2 focus:ring-primary"
+                  className={inputClass}
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-foreground mb-1">
-                  Home Address *
+                <label className="block text-[13px] font-medium text-foreground-secondary mb-1.5">
+                  Home address
                 </label>
                 <input
                   type="text"
@@ -174,60 +175,62 @@ function ClaimContent() {
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
                   placeholder="123 Main Street, London, UK"
-                  className="w-full h-11 px-4 rounded-lg border border-border bg-white text-foreground placeholder:text-muted/50 focus:outline-none focus:ring-2 focus:ring-primary"
+                  className={inputClass}
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-foreground mb-1">
-                  Booking Reference (optional)
+                <label className="block text-[13px] font-medium text-foreground-secondary mb-1.5">
+                  Booking reference
+                  <span className="text-muted-2 font-normal ml-1">optional</span>
                 </label>
                 <input
                   type="text"
                   value={bookingRef}
                   onChange={(e) => setBookingRef(e.target.value)}
                   placeholder="ABC123"
-                  className="w-full h-11 px-4 rounded-lg border border-border bg-white text-foreground placeholder:text-muted/50 focus:outline-none focus:ring-2 focus:ring-primary"
+                  className={inputClass}
                 />
               </div>
 
-              <button
-                type="submit"
-                className="w-full h-12 rounded-lg bg-primary text-white font-semibold hover:bg-primary-dark transition-colors cursor-pointer"
-              >
-                Generate My Claim Letter
-              </button>
+              <div className="pt-2">
+                <button
+                  type="submit"
+                  className="w-full h-11 rounded-[10px] bg-primary text-white text-[15px] font-medium hover:bg-primary-hover active:scale-[0.98] transition-all duration-200 cursor-pointer"
+                >
+                  Generate claim letter
+                </button>
+              </div>
 
-              <p className="text-sm text-center text-muted">
-                No payment required. No win, no fee.
+              <p className="text-[13px] text-center text-muted-2">
+                Free &middot; No payment required
               </p>
             </form>
           </div>
         )}
 
-        {/* Step 2: Generating */}
+        {/* Generating */}
         {step === "generating" && (
-          <div className="text-center py-20">
-            <div className="inline-block w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin" />
-            <p className="mt-4 text-muted">
-              Generating your claim letter with AI...
+          <div className="flex flex-col items-center py-24">
+            <div className="w-5 h-5 border-2 border-foreground/20 border-t-foreground rounded-full animate-spin" />
+            <p className="mt-4 text-[15px] text-muted">
+              Generating your claim letter...
             </p>
           </div>
         )}
 
-        {/* Step 3: Letter */}
+        {/* Letter */}
         {step === "letter" && (
           <div>
-            <h1 className="text-2xl font-bold text-foreground">
-              Your Claim Letter
+            <h1 className="text-[28px] font-semibold tracking-[-0.03em] text-foreground">
+              Your claim letter
             </h1>
-            <p className="mt-2 text-muted">
-              Review the letter below, then copy or download it to send to the
-              airline.
+            <p className="mt-2 text-[15px] text-muted">
+              Review, then copy or download to send to the airline.
             </p>
 
-            <div className="mt-6 border border-border rounded-lg bg-white p-6">
-              <pre className="whitespace-pre-wrap text-sm text-foreground font-sans leading-relaxed">
+            <div className="mt-6 rounded-2xl bg-surface p-6 shadow-sm ring-1 ring-ring">
+              <pre className="whitespace-pre-wrap text-[14px] text-foreground-secondary font-sans leading-[1.7]">
                 {letter}
               </pre>
             </div>
@@ -235,37 +238,34 @@ function ClaimContent() {
             <div className="mt-4 flex gap-3">
               <button
                 onClick={handleCopyLetter}
-                className="flex-1 h-11 rounded-lg border border-border text-foreground font-medium hover:bg-card transition-colors cursor-pointer"
+                className="flex-1 h-11 rounded-[10px] text-[15px] font-medium text-foreground ring-1 ring-ring hover:ring-border-strong hover:shadow-sm active:scale-[0.98] transition-all duration-200 cursor-pointer"
               >
-                Copy to Clipboard
+                {copied ? "Copied" : "Copy"}
               </button>
               <button
                 onClick={handleDownload}
-                className="flex-1 h-11 rounded-lg bg-primary text-white font-semibold hover:bg-primary-dark transition-colors cursor-pointer"
+                className="flex-1 h-11 rounded-[10px] bg-primary text-white text-[15px] font-medium hover:bg-primary-hover active:scale-[0.98] transition-all duration-200 cursor-pointer"
               >
-                Download as .txt
+                Download .txt
               </button>
             </div>
 
-            <div className="mt-8 border border-border rounded-lg p-6 bg-card">
-              <h3 className="font-semibold text-foreground">What&apos;s Next?</h3>
-              <ol className="mt-3 space-y-2 text-sm text-muted list-decimal list-inside">
+            <div className="mt-8 rounded-2xl bg-surface p-6 shadow-sm ring-1 ring-ring">
+              <h3 className="text-[15px] font-semibold text-foreground">Next steps</h3>
+              <ol className="mt-3 space-y-2 text-[14px] text-muted list-decimal list-inside leading-relaxed">
                 <li>Review and personalize the letter if needed</li>
                 <li>
-                  Send it to {flightData?.flight.airline || "the airline"}&apos;s
+                  Send to {flightData?.flight.airline || "the airline"}&apos;s
                   customer service email
                 </li>
-                <li>Wait for their response (usually 2-8 weeks)</li>
-                <li>
-                  If they refuse or don&apos;t respond, contact us for escalation
-                  support
-                </li>
+                <li>Wait for their response (typically 2&ndash;8 weeks)</li>
+                <li>If they refuse or ignore, we can help escalate</li>
               </ol>
             </div>
 
             <Link
               href="/"
-              className="mt-6 block text-center text-primary hover:underline"
+              className="mt-6 block text-[13px] text-accent hover:underline"
             >
               &larr; Check another flight
             </Link>

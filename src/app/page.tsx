@@ -6,16 +6,22 @@ import Link from "next/link";
 
 function Header() {
   return (
-    <header className="w-full border-b border-border">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-        <Link href="/" className="text-xl font-bold text-primary">
+    <header className="w-full backdrop-blur-md bg-surface/80 sticky top-0 z-50">
+      <div className="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
+        <Link href="/" className="text-[15px] font-semibold tracking-tight text-foreground">
           Claimly
         </Link>
-        <nav className="flex items-center gap-6 text-sm">
-          <a href="#how-it-works" className="text-muted hover:text-foreground transition-colors">
+        <nav className="flex items-center gap-6 text-[13px]">
+          <a
+            href="#how-it-works"
+            className="text-muted hover:text-foreground transition-colors duration-200"
+          >
             How It Works
           </a>
-          <a href="#faq" className="text-muted hover:text-foreground transition-colors">
+          <a
+            href="#faq"
+            className="text-muted hover:text-foreground transition-colors duration-200"
+          >
             FAQ
           </a>
         </nav>
@@ -26,13 +32,10 @@ function Header() {
 
 function Footer() {
   return (
-    <footer className="w-full border-t border-border bg-card mt-auto">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-muted">
-        <p>&copy; {new Date().getFullYear()} Claimly. All rights reserved.</p>
-        <p>
-          EU Regulation EC261/2004 entitles you to up to &euro;600 for flight
-          disruptions.
-        </p>
+    <footer className="w-full mt-auto">
+      <div className="max-w-5xl mx-auto px-6 py-10 flex flex-col sm:flex-row items-start justify-between gap-4 text-[13px] text-muted-2">
+        <p>&copy; {new Date().getFullYear()} Claimly</p>
+        <p>EU Regulation EC261/2004</p>
       </div>
     </footer>
   );
@@ -54,89 +57,79 @@ function HeroSection() {
   };
 
   return (
-    <section className="w-full bg-gradient-to-b from-primary-light/50 to-background">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-24 text-center">
-        <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-foreground leading-tight">
-          Flight Delayed?
-          <br />
-          <span className="text-primary">Get Up to &euro;600</span>
-        </h1>
-        <p className="mt-4 text-lg sm:text-xl text-muted max-w-2xl mx-auto">
-          EU law guarantees compensation for delayed or cancelled flights.
-          Enter your flight number &mdash; we&apos;ll handle the rest.
-          <strong> No win, no fee.</strong>
-        </p>
+    <section className="w-full pt-20 sm:pt-32 pb-20">
+      <div className="max-w-5xl mx-auto px-6">
+        <div className="max-w-2xl">
+          <p className="text-[13px] font-medium text-accent tracking-wide uppercase">
+            EU Flight Compensation
+          </p>
+          <h1 className="mt-3 text-[clamp(2rem,5vw,3.25rem)] font-semibold tracking-[-0.035em] leading-[1.1] text-foreground">
+            Your flight was delayed.
+            <br />
+            Get up to &euro;600 back.
+          </h1>
+          <p className="mt-5 text-[17px] leading-relaxed text-muted max-w-lg">
+            EU law guarantees compensation for disrupted flights.
+            Check your eligibility in seconds. No win, no fee.
+          </p>
+        </div>
 
         <form
           onSubmit={handleSubmit}
-          className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-3 max-w-lg mx-auto"
+          className="mt-10 flex flex-col sm:flex-row items-stretch gap-3 max-w-xl"
         >
           <input
             type="text"
-            placeholder="e.g. LH1234"
+            placeholder="Flight number, e.g. LH1234"
             value={flightNumber}
             onChange={(e) => setFlightNumber(e.target.value)}
-            className="w-full sm:w-auto flex-1 h-12 px-4 rounded-lg border border-border bg-white text-foreground placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-primary text-base"
+            className="flex-1 h-11 px-4 rounded-[10px] bg-surface text-foreground text-[15px] placeholder:text-muted-2 shadow-sm ring-1 ring-ring focus:outline-none focus:ring-2 focus:ring-accent/40 transition-shadow duration-200"
             required
           />
           <input
             type="date"
             value={date}
             onChange={(e) => setDate(e.target.value)}
-            className="w-full sm:w-auto h-12 px-4 rounded-lg border border-border bg-white text-foreground focus:outline-none focus:ring-2 focus:ring-primary text-base"
+            className="sm:w-44 h-11 px-4 rounded-[10px] bg-surface text-foreground text-[15px] shadow-sm ring-1 ring-ring focus:outline-none focus:ring-2 focus:ring-accent/40 transition-shadow duration-200"
           />
           <button
             type="submit"
             disabled={loading}
-            className="w-full sm:w-auto h-12 px-8 rounded-lg bg-primary text-white font-semibold hover:bg-primary-dark transition-colors disabled:opacity-50 cursor-pointer"
+            className="h-11 px-6 rounded-[10px] bg-primary text-white text-[15px] font-medium hover:bg-primary-hover active:scale-[0.98] transition-all duration-200 disabled:opacity-50 cursor-pointer whitespace-nowrap"
           >
-            {loading ? "Checking..." : "Check My Flight"}
+            {loading ? "Checking..." : "Check flight"}
           </button>
         </form>
 
-        <p className="mt-4 text-sm text-muted">
-          Free check &middot; Takes 30 seconds &middot; No credit card required
+        <p className="mt-4 text-[13px] text-muted-2">
+          Free eligibility check &middot; No credit card required
         </p>
       </div>
     </section>
   );
 }
 
-const steps = [
-  {
-    num: "1",
-    title: "Enter Your Flight",
-    desc: "Type your flight number and travel date. We instantly check if your flight qualifies.",
-  },
-  {
-    num: "2",
-    title: "We Build Your Claim",
-    desc: "Our AI generates a professional compensation letter tailored to your specific situation.",
-  },
-  {
-    num: "3",
-    title: "Get Compensated",
-    desc: "We submit your claim to the airline. You only pay when you receive your money.",
-  },
+const stats = [
+  { value: "€600", label: "Maximum compensation" },
+  { value: "3h", label: "Minimum delay" },
+  { value: "6 yrs", label: "Claim window" },
+  { value: "25%", label: "Only if you win" },
 ];
 
-function HowItWorks() {
+function StatsSection() {
   return (
-    <section id="how-it-works" className="w-full bg-card">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-20">
-        <h2 className="text-3xl font-bold text-center text-foreground">
-          How It Works
-        </h2>
-        <div className="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-8">
-          {steps.map((step) => (
-            <div key={step.num} className="text-center">
-              <div className="w-12 h-12 rounded-full bg-primary text-white text-xl font-bold flex items-center justify-center mx-auto">
-                {step.num}
-              </div>
-              <h3 className="mt-4 text-lg font-semibold text-foreground">
-                {step.title}
-              </h3>
-              <p className="mt-2 text-muted">{step.desc}</p>
+    <section className="w-full py-16">
+      <div className="max-w-5xl mx-auto px-6">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
+          {stats.map((stat) => (
+            <div
+              key={stat.label}
+              className="rounded-2xl bg-surface p-6 shadow-sm ring-1 ring-ring"
+            >
+              <p className="text-2xl sm:text-[28px] font-semibold tracking-tight text-foreground">
+                {stat.value}
+              </p>
+              <p className="mt-1 text-[13px] text-muted">{stat.label}</p>
             </div>
           ))}
         </div>
@@ -145,24 +138,48 @@ function HowItWorks() {
   );
 }
 
-const stats = [
-  { value: "€250–600", label: "Compensation per passenger" },
-  { value: "3+ hours", label: "Delay threshold" },
-  { value: "6 years", label: "You can claim back" },
-  { value: "No win", label: "No fee" },
+const steps = [
+  {
+    num: "01",
+    title: "Enter your flight",
+    desc: "Type your flight number and travel date. We instantly verify delay records and check qualification.",
+  },
+  {
+    num: "02",
+    title: "We build your claim",
+    desc: "Our system generates a professional compensation letter citing the relevant EU regulations.",
+  },
+  {
+    num: "03",
+    title: "Get compensated",
+    desc: "We submit the claim to the airline on your behalf. You only pay when you receive your money.",
+  },
 ];
 
-function StatsSection() {
+function HowItWorks() {
   return (
-    <section className="w-full">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-16">
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 text-center">
-          {stats.map((stat) => (
-            <div key={stat.label}>
-              <div className="text-2xl sm:text-3xl font-bold text-primary">
-                {stat.value}
-              </div>
-              <div className="mt-1 text-sm text-muted">{stat.label}</div>
+    <section id="how-it-works" className="w-full py-20">
+      <div className="max-w-5xl mx-auto px-6">
+        <p className="text-[13px] font-medium text-accent tracking-wide uppercase">
+          Process
+        </p>
+        <h2 className="mt-2 text-[28px] sm:text-[32px] font-semibold tracking-[-0.03em] text-foreground">
+          Three steps to your money
+        </h2>
+
+        <div className="mt-14 grid grid-cols-1 sm:grid-cols-3 gap-6">
+          {steps.map((step) => (
+            <div
+              key={step.num}
+              className="group rounded-2xl bg-surface p-6 shadow-sm ring-1 ring-ring hover:shadow-md hover:ring-border-strong transition-all duration-300"
+            >
+              <span className="text-[13px] font-mono text-muted-2">{step.num}</span>
+              <h3 className="mt-3 text-[17px] font-semibold text-foreground tracking-[-0.01em]">
+                {step.title}
+              </h3>
+              <p className="mt-2 text-[15px] leading-relaxed text-muted">
+                {step.desc}
+              </p>
             </div>
           ))}
         </div>
@@ -174,40 +191,71 @@ function StatsSection() {
 const faqs = [
   {
     q: "What is EC261?",
-    a: "EU Regulation EC261/2004 is a law that entitles passengers to compensation of €250–€600 when their flight is delayed by 3+ hours, cancelled, or overbooked. It applies to all flights departing from EU airports, and flights arriving in the EU on EU-based airlines.",
+    a: "EU Regulation EC261/2004 entitles passengers to €250–€600 compensation when flights are delayed 3+ hours, cancelled, or overbooked. It applies to all flights departing EU airports, and EU airline flights arriving in the EU.",
   },
   {
     q: "How much does Claimly charge?",
-    a: "Nothing upfront. We only charge a 25% success fee if you receive compensation. If we don't win, you don't pay.",
+    a: "Nothing upfront. We charge a 25% success fee only if you receive compensation. If we don\u2019t win, you don\u2019t pay.",
   },
   {
     q: "How far back can I claim?",
-    a: "In most EU countries, you can claim for flights up to 3–6 years ago, depending on the country. Enter your flight details and we'll let you know.",
+    a: "In most EU countries, you can claim flights from the past 3\u20136 years depending on jurisdiction. Enter your flight details to find out.",
   },
   {
-    q: "What do I need to file a claim?",
-    a: "Just your flight number, travel date, and basic passenger details (name, email, address). We handle everything else.",
+    q: "What information do I need?",
+    a: "Your flight number, travel date, and basic passenger details. We handle everything else.",
   },
   {
-    q: "How long does it take to get compensated?",
-    a: "Most airlines respond within 2–8 weeks. Some may take longer, but we follow up persistently until you get what you're owed.",
+    q: "How long does it take?",
+    a: "Most airlines respond within 2\u20138 weeks. We follow up persistently until you receive what you\u2019re owed.",
   },
 ];
 
 function FAQ() {
   return (
-    <section id="faq" className="w-full bg-card">
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 py-16 sm:py-20">
-        <h2 className="text-3xl font-bold text-center text-foreground">
-          Frequently Asked Questions
+    <section id="faq" className="w-full py-20">
+      <div className="max-w-2xl mx-auto px-6">
+        <p className="text-[13px] font-medium text-accent tracking-wide uppercase">
+          FAQ
+        </p>
+        <h2 className="mt-2 text-[28px] sm:text-[32px] font-semibold tracking-[-0.03em] text-foreground">
+          Common questions
         </h2>
-        <div className="mt-10 space-y-6">
+
+        <div className="mt-12 space-y-0 divide-y divide-border">
           {faqs.map((faq) => (
-            <div key={faq.q} className="border-b border-border pb-6">
-              <h3 className="text-lg font-semibold text-foreground">{faq.q}</h3>
-              <p className="mt-2 text-muted leading-relaxed">{faq.a}</p>
+            <div key={faq.q} className="py-6">
+              <h3 className="text-[15px] font-medium text-foreground">{faq.q}</h3>
+              <p className="mt-2 text-[15px] leading-relaxed text-muted">{faq.a}</p>
             </div>
           ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function CTASection() {
+  return (
+    <section className="w-full py-20">
+      <div className="max-w-5xl mx-auto px-6">
+        <div className="rounded-2xl bg-foreground p-10 sm:p-14 text-center">
+          <h2 className="text-[28px] sm:text-[32px] font-semibold tracking-[-0.03em] text-white">
+            Check your flight now
+          </h2>
+          <p className="mt-3 text-[15px] text-white/60 max-w-md mx-auto">
+            It takes 30 seconds to find out if you&apos;re owed compensation.
+          </p>
+          <Link
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
+            className="mt-6 inline-flex h-11 items-center px-6 rounded-[10px] bg-white text-foreground text-[15px] font-medium hover:bg-white/90 active:scale-[0.98] transition-all duration-200"
+          >
+            Get started
+          </Link>
         </div>
       </div>
     </section>
@@ -223,6 +271,7 @@ export default function Home() {
         <StatsSection />
         <HowItWorks />
         <FAQ />
+        <CTASection />
       </main>
       <Footer />
     </>
